@@ -31,8 +31,11 @@ class MyApp extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.purple)
-            .copyWith(secondary: Colors.amber),
+        colorScheme: ColorScheme.fromSwatch(
+          primarySwatch: Colors.purple,
+          errorColor: Colors.red,
+          accentColor: Colors.amber,
+        ),
       ),
     );
   }
@@ -82,6 +85,13 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  // Remove transaction from list
+  void _deleteTransaction(String id) {
+    setState(() {
+      _userTransactions.removeWhere((tx) => tx.id == id);
+    });
+  }
+
   void _startNewTransaction(BuildContext ctx) {
     showModalBottomSheet(
       context: ctx,
@@ -111,7 +121,10 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Chart(_recentTransactions),
-            TransactionList(userTransactions: _userTransactions),
+            TransactionList(
+              userTransactions: _userTransactions,
+              deleteTx: _deleteTransaction,
+            ),
           ],
         ),
       ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class NewTransaction extends StatefulWidget {
   final Function addNewTransaction;
@@ -10,14 +11,15 @@ class NewTransaction extends StatefulWidget {
 }
 
 class _NewTransactionState extends State<NewTransaction> {
-  final titleController = TextEditingController();
-  final amountController = TextEditingController();
+  final _titleController = TextEditingController();
+  final _amountController = TextEditingController();
   DateTime _selectedDate = DateTime.now();
 
   void _submitData() {
-    final enteredTitle = titleController.text;
-    final enteredAmount =
-        amountController.text != null ? double.parse(amountController.text) : 0;
+    final enteredTitle = _titleController.text;
+    final enteredAmount = _amountController.text != null
+        ? double.parse(_amountController.text)
+        : 0;
 
     if (enteredTitle.isEmpty || enteredAmount <= 0) {
       return;
@@ -54,14 +56,14 @@ class _NewTransactionState extends State<NewTransaction> {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             TextField(
-              controller: titleController,
+              controller: _titleController,
               onSubmitted: (_) => _submitData(),
               decoration: InputDecoration(
                 labelText: 'Title',
               ),
             ),
             TextField(
-              controller: amountController,
+              controller: _amountController,
               keyboardType: TextInputType.numberWithOptions(decimal: true),
               onSubmitted: (_) => _submitData(),
               decoration: InputDecoration(
@@ -71,19 +73,17 @@ class _NewTransactionState extends State<NewTransaction> {
             Container(
               height: 70,
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Expanded(
-                    child: FlatButton(
-                      child: Text('No Date Chosen'),
-                      onPressed: () {},
-                    ),
+                    child: Text(_selectedDate == null
+                        ? 'No Date Chosen'
+                        : 'Selected Date: ${DateFormat.yMd().format(_selectedDate)}'),
                   ),
-                  Expanded(
-                    child: FlatButton(
-                      child: Text('Select Date'),
-                      textColor: Theme.of(context).colorScheme.primary,
-                      onPressed: _presentDatePicker,
-                    ),
+                  FlatButton(
+                    child: Text('Select Date'),
+                    textColor: Theme.of(context).colorScheme.primary,
+                    onPressed: _presentDatePicker,
                   ),
                 ],
               ),
