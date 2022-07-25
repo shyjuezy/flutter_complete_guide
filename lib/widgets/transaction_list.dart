@@ -31,50 +31,74 @@ class TransactionList extends StatelessWidget {
         : Column(
             children: userTransactions.map(
               (tx) {
-                return Card(
-                  child: Row(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.symmetric(
-                          vertical: 10,
-                          horizontal: 15,
-                        ),
-                        padding: EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Theme.of(context).primaryColor,
-                            width: 2,
-                          ),
-                        ),
+                return ListTile(
+                  leading: CircleAvatar(
+                    radius: 30,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: FittedBox(
                         child: Text(
                           '\$${tx.amount.toStringAsFixed(2)}',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).primaryColor,
-                          ),
-                          textAlign: TextAlign.center,
                         ),
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(tx.title,
-                              style: Theme.of(context).textTheme.subtitle1),
-                          Text(
-                            DateFormat.yMMMMEEEEd().format(tx.date),
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
+                    ),
                   ),
-                  elevation: 5,
+                  title: Text(
+                    tx.title,
+                    style: Theme.of(context).textTheme.subtitle1,
+                  ),
+                  subtitle: Text(
+                    DateFormat.yMMMd().format(tx.date),
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 12,
+                    ),
+                  ),
                 );
+                // return Card(
+                //   child: Row(
+                //     children: [
+                //       Container(
+                //         margin: EdgeInsets.symmetric(
+                //           vertical: 10,
+                //           horizontal: 15,
+                //         ),
+                //         padding: EdgeInsets.all(10),
+                //         decoration: BoxDecoration(
+                //           border: Border.all(
+                //             color: Theme.of(context).colorScheme.primary,
+                //             width: 2,
+                //           ),
+                //         ),
+                //         child: Text(
+                //           '\$${tx.amount.toStringAsFixed(2)}',
+                //           style: TextStyle(
+                //             fontSize: 20,
+                //             fontWeight: FontWeight.bold,
+                //             color: Theme.of(context).colorScheme.primary,
+                //           ),
+                //           textAlign: TextAlign.center,
+                //         ),
+                //       ),
+                //       Column(
+                //         crossAxisAlignment: CrossAxisAlignment.start,
+                //         children: [
+                //           Text(tx.title,
+                //               style: Theme.of(context).textTheme.subtitle1),
+                //           Text(
+                //             DateFormat.yMMMMEEEEd().format(tx.date),
+                //             style: TextStyle(
+                //               fontSize: 12,
+                //               fontWeight: FontWeight.bold,
+                //               color: Colors.grey,
+                //             ),
+                //           ),
+                //         ],
+                //       ),
+                //     ],
+                //   ),
+                //   elevation: 5,
+                // );
               },
             ).toList(),
           );

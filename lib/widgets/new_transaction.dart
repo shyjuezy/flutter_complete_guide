@@ -12,8 +12,9 @@ class NewTransaction extends StatefulWidget {
 class _NewTransactionState extends State<NewTransaction> {
   final titleController = TextEditingController();
   final amountController = TextEditingController();
+  DateTime _selectedDate = DateTime.now();
 
-  void submitData() {
+  void _submitData() {
     final enteredTitle = titleController.text;
     final enteredAmount =
         amountController.text != null ? double.parse(amountController.text) : 0;
@@ -22,9 +23,26 @@ class _NewTransactionState extends State<NewTransaction> {
       return;
     }
 
-    widget.addNewTransaction(enteredTitle, enteredAmount);
+    widget.addNewTransaction(enteredTitle, enteredAmount, _selectedDate);
 
     Navigator.of(context).pop();
+  }
+
+  void _presentDatePicker() {
+    showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2019),
+      lastDate: DateTime.now(),
+    ).then((pickedDate) {
+      print('pickedDate: $pickedDate');
+      if (pickedDate == null) {
+        return;
+      }
+      setState(() {
+        _selectedDate = pickedDate;
+      });
+    });
   }
 
   @override
@@ -37,7 +55,7 @@ class _NewTransactionState extends State<NewTransaction> {
           children: [
             TextField(
               controller: titleController,
-              onSubmitted: (_) => submitData(),
+              onSubmitted: (_) => _submitData(),
               decoration: InputDecoration(
                 labelText: 'Title',
               ),
@@ -45,15 +63,36 @@ class _NewTransactionState extends State<NewTransaction> {
             TextField(
               controller: amountController,
               keyboardType: TextInputType.numberWithOptions(decimal: true),
-              onSubmitted: (_) => submitData(),
+              onSubmitted: (_) => _submitData(),
               decoration: InputDecoration(
                 labelText: 'Amount',
               ),
             ),
-            FlatButton(
-              onPressed: submitData,
+            Container(
+              height: 70,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: FlatButton(
+                      child: Text('No Date Chosen'),
+                      onPressed: () {},
+                    ),
+                  ),
+                  Expanded(
+                    child: FlatButton(
+                      child: Text('Select Date'),
+                      textColor: Theme.of(context).colorScheme.primary,
+                      onPressed: _presentDatePicker,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            RaisedButton(
+              onPressed: _submitData,
               child: Text('Add Transaction'),
-              textColor: Colors.purple,
+              color: Theme.of(context).colorScheme.primary,
+              textColor: Theme.of(context).textTheme.button.color,
             ),
           ],
         ),
